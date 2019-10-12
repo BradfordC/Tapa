@@ -10,7 +10,7 @@ namespace Tapa
 
         private List<int> Clues;
 
-        public Cell(List<int> clues = null, CellState state = CellState.Kitty)
+        public Cell(List<int> clues = null, CellState state = CellState.Empty)
         {
             if(clues == null)
             {
@@ -57,7 +57,7 @@ namespace Tapa
 
         public bool IsPathable()
         {
-            if (IsClue() || State == CellState.White)
+            if (IsClue() || State == CellState.Wall)
             {
                 return false;
             }
@@ -66,7 +66,7 @@ namespace Tapa
 
         public bool IsPath()
         {
-            if (State == CellState.Black)
+            if (State == CellState.Path)
             {
                 return true;
             }
@@ -135,7 +135,7 @@ namespace Tapa
             List<Cell> neighborClones = new List<Cell>();
             neighbors.ForEach(x => neighborClones.Add(new Cell(x)));
 
-            //Figure out which neighboring cells are still under consideration (not black, white, or a clue)
+            //Figure out which neighboring cells are still under consideration (i.e. aren't paths, walls, or clues)
             //We'll be backtracking, so we don't want to worry about the assigned cells
             List<Cell> unresolvedCells = new List<Cell>();
             for(int i = 0; i < neighborClones.Count; i++)
@@ -154,7 +154,7 @@ namespace Tapa
                 for (int j = 0; j < unresolvedCells.Count; j++)
                 {
                     Cell neighbor = unresolvedCells[j];
-                    neighbor.State = ((i & (1 << j)) != 0) ? CellState.Black : CellState.White;
+                    neighbor.State = ((i & (1 << j)) != 0) ? CellState.Path : CellState.Wall;
                 }
 
                 //See if it's a valid configuration
@@ -186,8 +186,8 @@ namespace Tapa
 
     public enum CellState
     {
-        Kitty,
-        Black,
-        White
+        Empty,
+        Path,
+        Wall
     }
 }

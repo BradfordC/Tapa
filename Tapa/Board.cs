@@ -19,7 +19,7 @@ namespace Tapa
             }
         }
 
-        //Returns the cell at the given location, or a white cell if it's off the board
+        //Returns the cell at the given location, or a wall cell if it's off the board
         public Cell At(int x, int y)
         {
             if (x >= 0 && x < Width && y >= 0 && y < Height)
@@ -28,9 +28,9 @@ namespace Tapa
             }
             else
             {
-                Cell whiteCell = new Cell();
-                whiteCell.State = CellState.White;
-                return whiteCell;
+                Cell wallCell = new Cell();
+                wallCell.State = CellState.Wall;
+                return wallCell;
             }
         }
 

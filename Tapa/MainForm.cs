@@ -96,13 +96,13 @@ namespace Tapa
             Cell cell = tapaBoard.At(x, y);
             if(!cell.IsClue())
             {
-                if(cell.State == CellState.Black)
+                if(cell.State == CellState.Path)
                 {
-                    cell.State = CellState.Kitty;
+                    cell.State = CellState.Empty;
                 }
                 else
                 {
-                    cell.State = CellState.Black;
+                    cell.State = CellState.Path;
                 }
             }
 
