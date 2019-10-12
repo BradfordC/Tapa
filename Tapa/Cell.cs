@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Tapa
 {
@@ -41,7 +43,7 @@ namespace Tapa
             return false;
         }
 
-        public bool IsBrokenClue(List<Cell> neighbors)
+        public bool IsFulfilledClue(List<Cell> neighbors)
         {
             if (!IsClue())
             {
@@ -76,6 +78,28 @@ namespace Tapa
             }
 
             //Compare current line segments to clue
+            List<int> goal = Clues.OrderByDescending(i => i).ToList();
+            List<int> actual = segments.OrderByDescending(i => i).ToList();
+
+            goal.ForEach(x => Console.Write(x + " "));
+            Console.WriteLine();
+            actual.ForEach(x => Console.Write(x + " "));
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+            if (goal.Count != actual.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < goal.Count; i++)
+            {
+                //If any segments are larger than they should be, the clue has been broken
+                if(actual[i] != goal[i])
+                {
+                    return false;
+                }
+            }
             return true;
         }
 

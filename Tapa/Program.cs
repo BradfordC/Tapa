@@ -16,8 +16,9 @@ namespace Tapa
 
             Board tapa = new Board(3);
             tapa.At(1, 0).State = CellState.Black;
-            tapa.At(1, 1).Clues.Add(1);
-            tapa.At(1, 1).Clues.Add(2);
+            tapa.At(0, 1).Clues.Add(1);
+            tapa.At(0, 1).Clues.Add(2);
+            tapa.At(2, 1).Clues.Add(3);
 
             MainForm form = new MainForm(tapa);
             Application.Run(form);

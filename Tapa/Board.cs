@@ -37,22 +37,21 @@ namespace Tapa
         public List<Cell> GetNeighbors(int x, int y, bool countDiagonals = true)
         {
             List<Cell> neighbors = new List<Cell>();
-            for (int dx = -1; dx <= 1; dx++)
+            //Neighbors should be added in the following order
+            //  123
+            //  8x4
+            //  765
+            int[] dx = { -1, 0, 1, 1, 1, 0, -1, -1 };
+            int[] dy = { -1, -1, -1, 0, 1, 1, 1, 0 };
+
+            for (int i = 0; i < dx.Length; i++)
             {
-                for (int dy = -1; dy <= 1; dy++)
+                //Don't add the diagonals if indicated
+                if (!countDiagonals && dx[i] != 0 && dy[i] != 0)
                 {
-                    //Don't add the cell at the center
-                    if (dx == 0 && dy == 0)
-                    {
-                        continue;
-                    }
-                    //Don't add the diagonals if indicated
-                    if (countDiagonals && dx != 0 && dy != 0)
-                    {
-                        continue;
-                    }
-                    neighbors.Add(At(x + dx, y + dy));
+                    continue;
                 }
+                neighbors.Add(At(x + dx[i], y + dy[i]));
             }
             return neighbors;
         }

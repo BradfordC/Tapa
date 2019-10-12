@@ -52,13 +52,13 @@ namespace Tapa
                     }
                     else if(cell.IsClue())
                     {
-                        if(cell.IsBrokenClue(tapaBoard.GetNeighbors(x, y)))
+                        if(cell.IsFulfilledClue(tapaBoard.GetNeighbors(x, y)))
                         {
-                            color = Color.Red;
+                            color = Color.Green;
                         }
                         else
                         {
-                            color = Color.Green;
+                            color = Color.Red;
                         }
                         cellText = cell.GetClueString();
                     }
