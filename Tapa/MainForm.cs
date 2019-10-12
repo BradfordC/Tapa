@@ -57,7 +57,6 @@ namespace Tapa
                             color = Color.Red;
                         }
                         cellText = cell.GetClueString();
-                        cellText += "\n" + cell.RemainingClueConfigs(tapaBoard.GetNeighbors(x, y));
                     }
                     else
                     {
@@ -78,13 +77,13 @@ namespace Tapa
                     e.Graphics.FillRectangle(new SolidBrush(color), new Rectangle(cellCorner, cellSize));
                     if(cellText != null)
                     {
-                        Font font = new Font("Arial", 30);
+                        Font font = new Font("Arial", 20);
                         SolidBrush brush = new SolidBrush(Color.Black);
                         StringFormat format = new StringFormat();
                         format.Alignment = StringAlignment.Center;
                         format.LineAlignment = StringAlignment.Center;
 
-                        e.Graphics.DrawString(cellText, font, brush, Point.Add(cellCorner, new Size(tileSize / 2, tileSize / 2)), format);
+                        e.Graphics.DrawString(cellText, font, brush, Point.Add(cellCorner, new Size(cellSize.Width / 2, cellSize.Height / 2)), format);
                     }
                 }
             }
