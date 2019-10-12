@@ -107,6 +107,7 @@ namespace Tapa
             }
 
             this.CluePanel.BackColor = validator.ValidateClues() ? Color.Green : Color.Red;
+            this.SquarePanel.BackColor = validator.ValidateSquares() ? Color.Green : Color.Red;
 
             this.Refresh();
         }

@@ -31,6 +31,8 @@
             this.DrawingPanel = new System.Windows.Forms.Panel();
             this.ClueLabel = new System.Windows.Forms.Label();
             this.CluePanel = new System.Windows.Forms.Panel();
+            this.SquareLabel = new System.Windows.Forms.Label();
+            this.SquarePanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // DrawingPanel
@@ -62,11 +64,31 @@
             this.CluePanel.Size = new System.Drawing.Size(20, 20);
             this.CluePanel.TabIndex = 2;
             // 
+            // SquareLabel
+            // 
+            this.SquareLabel.AutoSize = true;
+            this.SquareLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SquareLabel.Location = new System.Drawing.Point(155, 18);
+            this.SquareLabel.Name = "SquareLabel";
+            this.SquareLabel.Size = new System.Drawing.Size(69, 20);
+            this.SquareLabel.TabIndex = 3;
+            this.SquareLabel.Text = "Squares";
+            // 
+            // SquarePanel
+            // 
+            this.SquarePanel.BackColor = System.Drawing.Color.Green;
+            this.SquarePanel.Location = new System.Drawing.Point(230, 18);
+            this.SquarePanel.Name = "SquarePanel";
+            this.SquarePanel.Size = new System.Drawing.Size(20, 20);
+            this.SquarePanel.TabIndex = 3;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(568, 611);
+            this.Controls.Add(this.SquarePanel);
+            this.Controls.Add(this.SquareLabel);
             this.Controls.Add(this.CluePanel);
             this.Controls.Add(this.ClueLabel);
             this.Controls.Add(this.DrawingPanel);
@@ -82,6 +104,8 @@
         private System.Windows.Forms.Panel DrawingPanel;
         private System.Windows.Forms.Label ClueLabel;
         private System.Windows.Forms.Panel CluePanel;
+        private System.Windows.Forms.Label SquareLabel;
+        private System.Windows.Forms.Panel SquarePanel;
     }
 }
 
