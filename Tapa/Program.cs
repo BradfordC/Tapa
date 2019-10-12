@@ -8,15 +8,19 @@ namespace Tapa
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            Board tapa = new Board(3);
+            tapa.At(1, 0).State = CellState.Black;
+            tapa.At(1, 1).Clues.Add(1);
+            tapa.At(1, 1).Clues.Add(2);
+
+            MainForm form = new MainForm(tapa);
+            Application.Run(form);
         }
     }
 }

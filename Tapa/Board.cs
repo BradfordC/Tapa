@@ -2,7 +2,7 @@
 
 namespace Tapa
 {
-    class Board
+    public class Board
     {
         public int Width;
         public int Height;

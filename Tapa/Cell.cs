@@ -2,19 +2,25 @@
 
 namespace Tapa
 {
-    class Cell
+    public class Cell
     {
         public CellState State;
         public List<int> Clues;
 
         public Cell(List<int> clues = null)
         {
+            if(clues == null)
+            {
+                clues = new List<int>();
+            }
+
+            State = CellState.Kitty;
             Clues = clues;
         }
 
         public bool IsClue()
         {
-            return Clues != null;
+            return Clues.Count > 0;
         }
 
         public bool IsPathable()
@@ -72,9 +78,25 @@ namespace Tapa
             //Compare current line segments to clue
             return true;
         }
+
+        public string GetClueString()
+        {
+            if(!IsClue())
+            {
+                return null;
+            }
+
+            string clueString = "";
+            foreach(int clue in Clues)
+            {
+                clueString += clue + " ";
+            }
+            clueString.Remove(clueString.Length - 1);
+            return clueString;
+        }
     }
 
-    enum CellState
+    public enum CellState
     {
         Kitty,
         Black,
