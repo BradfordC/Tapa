@@ -36,15 +36,17 @@
             this.DrawingPanel.BackColor = System.Drawing.Color.Silver;
             this.DrawingPanel.Location = new System.Drawing.Point(12, 59);
             this.DrawingPanel.Name = "DrawingPanel";
-            this.DrawingPanel.Size = new System.Drawing.Size(610, 540);
+            this.DrawingPanel.Size = new System.Drawing.Size(544, 540);
             this.DrawingPanel.TabIndex = 0;
             this.DrawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawingPanel_Paint);
+            this.DrawingPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DrawingPanel_MouseClick);
+            this.DrawingPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DrawingPanel_MouseClick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 611);
+            this.ClientSize = new System.Drawing.Size(568, 611);
             this.Controls.Add(this.DrawingPanel);
             this.Name = "MainForm";
             this.Text = "Tapa";

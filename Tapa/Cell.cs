@@ -62,10 +62,10 @@ namespace Tapa
                     currentSegment = 0;
                 }
             }
-            //If it ended on a line segment, check to see if it's connected to the starting segment, since the neighbors do form a loop
+            //If it ended on a line segment, check to see if it's connected to the starting segment, since the neighbors form a loop
             if (currentSegment > 0)
             {
-                if (neighbors[0].IsPath())
+                if (neighbors[0].IsPath() && segments.Count > 0)
                 {
                     segments[0] += currentSegment;
                 }

@@ -18,6 +18,9 @@ namespace Tapa
         public MainForm(Board board)
         {
             tapaBoard = board;
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             InitializeComponent();
         }
@@ -73,6 +76,31 @@ namespace Tapa
                     }
                 }
             }
+        }
+
+        private void DrawingPanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            Panel panel = (Panel)sender;
+            //Figure out which tile was clicked
+            int boardSize = Math.Min(panel.Width, panel.Height);
+            int tileSize = boardSize / Math.Min(tapaBoard.Width, tapaBoard.Height);
+            Point mousePoint = panel.PointToClient(MousePosition);
+            int x = mousePoint.X / tileSize;
+            int y = mousePoint.Y / tileSize;
+            //Switch the color of the clicked tile
+            Cell cell = tapaBoard.At(x, y);
+            if(!cell.IsClue())
+            {
+                if(cell.State == CellState.Black)
+                {
+                    cell.State = CellState.Kitty;
+                }
+                else
+                {
+                    cell.State = CellState.Black;
+                }
+            }
+            this.Refresh();
         }
     }
 }
