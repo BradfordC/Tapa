@@ -7,7 +7,8 @@ namespace Tapa
     public class Cell
     {
         public CellState State;
-        public List<int> Clues;
+
+        private List<int> Clues;
 
         public Cell(List<int> clues = null, CellState state = CellState.Kitty)
         {
@@ -23,6 +24,30 @@ namespace Tapa
         //Create a deep copy of the given Cell
         public Cell(Cell other) : this(new List<int>(other.Clues), other.State)
         {
+        }
+
+        public void AddClues(params int[] clues)
+        {
+            if(Clues == null)
+            {
+                Clues = new List<int>();
+            }
+
+            foreach(int clue in clues)
+            {
+                Clues.Add(clue);
+            }
+        }
+
+        public void ClearClues()
+        {
+            Clues = new List<int>();
+        }
+
+        public void SetClues(params int[] clues)
+        {
+            ClearClues();
+            AddClues(clues);
         }
 
         public bool IsClue()

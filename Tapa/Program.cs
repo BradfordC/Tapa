@@ -15,10 +15,8 @@ namespace Tapa
             Application.SetCompatibleTextRenderingDefault(false);
 
             Board tapa = new Board(4);
-            tapa.At(0, 1).Clues.Add(1);
-            tapa.At(0, 1).Clues.Add(2);
-            tapa.At(2, 1).Clues.Add(3);
-            tapa.At(2, 1).Clues.Add(1);
+            tapa.At(0, 1).SetClues(1, 2);
+            tapa.At(2, 1).SetClues(1, 3);
 
             MainForm form = new MainForm(tapa);
             Application.Run(form);
