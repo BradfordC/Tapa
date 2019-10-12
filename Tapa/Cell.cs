@@ -80,14 +80,6 @@ namespace Tapa
             //Compare current line segments to clue
             List<int> goal = Clues.OrderByDescending(i => i).ToList();
             List<int> actual = segments.OrderByDescending(i => i).ToList();
-
-            goal.ForEach(x => Console.Write(x + " "));
-            Console.WriteLine();
-            actual.ForEach(x => Console.Write(x + " "));
-            Console.WriteLine();
-            Console.WriteLine();
-
-
             if (goal.Count != actual.Count)
             {
                 return false;
