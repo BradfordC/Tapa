@@ -61,6 +61,7 @@ namespace Tapa
                             color = Color.Red;
                         }
                         cellText = cell.GetClueString();
+                        cellText += "\n" + cell.RemainingClueConfigs(tapaBoard.GetNeighbors(x, y));
                     }
                     Point cellCorner = new Point(x * tileSize + cellBezel, y * tileSize + cellBezel);
                     e.Graphics.FillRectangle(new SolidBrush(color), new Rectangle(cellCorner, cellSize));

@@ -9,15 +9,20 @@ namespace Tapa
         public CellState State;
         public List<int> Clues;
 
-        public Cell(List<int> clues = null)
+        public Cell(List<int> clues = null, CellState state = CellState.Kitty)
         {
             if(clues == null)
             {
                 clues = new List<int>();
             }
 
-            State = CellState.Kitty;
+            State = state;
             Clues = clues;
+        }
+
+        //Create a deep copy of the given Cell
+        public Cell(Cell other) : this(new List<int>(other.Clues), other.State)
+        {
         }
 
         public bool IsClue()
@@ -93,6 +98,48 @@ namespace Tapa
                 }
             }
             return true;
+        }
+
+        public int RemainingClueConfigs(List<Cell> neighbors)
+        {
+            if(!IsClue())
+            {
+                return 0;
+            }
+            //Deep clone here to prevent affecting the actual cells
+            List<Cell> neighborClones = new List<Cell>();
+            neighbors.ForEach(x => neighborClones.Add(new Cell(x)));
+
+            //Figure out which neighboring cells are still under consideration (not black, white, or a clue)
+            //We'll be backtracking, so we don't want to worry about the assigned cells
+            List<Cell> unresolvedCells = new List<Cell>();
+            for(int i = 0; i < neighborClones.Count; i++)
+            {
+                if(neighborClones[i].IsPathable() && !neighborClones[i].IsPath())
+                {
+                    unresolvedCells.Add(neighborClones[i]);
+                }
+            }
+
+            //Go through all possible configurations, counting the valid ones
+            int validConfigurations = 0;
+            for(int i = 0; i < 1 << unresolvedCells.Count; i++)
+            {
+                //Set each cell's value based on a bit in a number
+                for (int j = 0; j < unresolvedCells.Count; j++)
+                {
+                    Cell neighbor = unresolvedCells[j];
+                    neighbor.State = ((i & (1 << j)) != 0) ? CellState.Black : CellState.White;
+                }
+
+                //See if it's a valid configuration
+                if (IsFulfilledClue(neighborClones))
+                {
+                    validConfigurations++;
+                }
+            }
+
+            return validConfigurations;
         }
 
         public string GetClueString()
