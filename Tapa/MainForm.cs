@@ -46,15 +46,7 @@ namespace Tapa
                     //Figure out what to print
                     Color color = Color.White;
                     string cellText = null;
-                    if(cell.IsPath())
-                    {
-                        color = Color.Black;
-                    }
-                    else if(cell.IsPathable())
-                    {
-                        color = Color.White;
-                    }
-                    else if(cell.IsClue())
+                    if(cell.IsClue())
                     {
                         if(cell.IsFulfilledClue(tapaBoard.GetNeighbors(x, y)))
                         {
@@ -66,6 +58,21 @@ namespace Tapa
                         }
                         cellText = cell.GetClueString();
                         cellText += "\n" + cell.RemainingClueConfigs(tapaBoard.GetNeighbors(x, y));
+                    }
+                    else
+                    {
+                        if(cell.State == CellState.Path)
+                        {
+                            color = Color.Black;
+                        }
+                        else if(cell.State == CellState.Wall)
+                        {
+                            color = Color.Cyan;
+                        }
+                        else
+                        {
+                            color = Color.White;
+                        }
                     }
                     Point cellCorner = new Point(x * tileSize + cellBezel, y * tileSize + cellBezel);
                     e.Graphics.FillRectangle(new SolidBrush(color), new Rectangle(cellCorner, cellSize));
@@ -94,15 +101,17 @@ namespace Tapa
             int y = mousePoint.Y / tileSize;
             //Switch the color of the clicked tile
             Cell cell = tapaBoard.At(x, y);
+            
             if(!cell.IsClue())
             {
-                if(cell.State == CellState.Path)
+                CellState chosenState = (e.Button == MouseButtons.Left) ? CellState.Path : CellState.Wall;
+                if(cell.State == chosenState)
                 {
                     cell.State = CellState.Empty;
                 }
                 else
                 {
-                    cell.State = CellState.Path;
+                    cell.State = chosenState;
                 }
             }
 
