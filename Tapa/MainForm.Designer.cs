@@ -33,6 +33,8 @@
             this.CluePanel = new System.Windows.Forms.Panel();
             this.SquareLabel = new System.Windows.Forms.Label();
             this.SquarePanel = new System.Windows.Forms.Panel();
+            this.ConnectionLabel = new System.Windows.Forms.Label();
+            this.ConnectionPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // DrawingPanel
@@ -82,11 +84,31 @@
             this.SquarePanel.Size = new System.Drawing.Size(20, 20);
             this.SquarePanel.TabIndex = 3;
             // 
+            // ConnectionLabel
+            // 
+            this.ConnectionLabel.AutoSize = true;
+            this.ConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectionLabel.Location = new System.Drawing.Point(286, 18);
+            this.ConnectionLabel.Name = "ConnectionLabel";
+            this.ConnectionLabel.Size = new System.Drawing.Size(98, 20);
+            this.ConnectionLabel.TabIndex = 4;
+            this.ConnectionLabel.Text = "Connections";
+            // 
+            // ConnectionPanel
+            // 
+            this.ConnectionPanel.BackColor = System.Drawing.Color.Green;
+            this.ConnectionPanel.Location = new System.Drawing.Point(390, 18);
+            this.ConnectionPanel.Name = "ConnectionPanel";
+            this.ConnectionPanel.Size = new System.Drawing.Size(20, 20);
+            this.ConnectionPanel.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(568, 611);
+            this.Controls.Add(this.ConnectionPanel);
+            this.Controls.Add(this.ConnectionLabel);
             this.Controls.Add(this.SquarePanel);
             this.Controls.Add(this.SquareLabel);
             this.Controls.Add(this.CluePanel);
@@ -106,6 +128,8 @@
         private System.Windows.Forms.Panel CluePanel;
         private System.Windows.Forms.Label SquareLabel;
         private System.Windows.Forms.Panel SquarePanel;
+        private System.Windows.Forms.Label ConnectionLabel;
+        private System.Windows.Forms.Panel ConnectionPanel;
     }
 }
 

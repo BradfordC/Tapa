@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Tapa
 {
     class BoardValidator
     {
-        private List<int[]> ClueLocs;
+        private List<Point> ClueLocs;
 
         private Board board;
 
@@ -20,14 +21,14 @@ namespace Tapa
 
         public void FindClues()
         {
-            ClueLocs = new List<int[]>();
+            ClueLocs = new List<Point>();
             for(int x = 0; x < board.Width; x++)
             {
                 for(int y = 0; y < board.Height; y++)
                 {
                     if (board.At(x, y).IsClue())
                     {
-                        ClueLocs.Add(new int[] { x, y });
+                        ClueLocs.Add(new Point(x, y));
                     }
 
                 }
@@ -40,10 +41,10 @@ namespace Tapa
             {
                 FindClues();
             }
-            foreach(int[] clueLoc in ClueLocs)
+            foreach(Point clueLoc in ClueLocs)
             {
-                int x = clueLoc[0];
-                int y = clueLoc[1];
+                int x = clueLoc.X;
+                int y = clueLoc.Y;
 
                 if(!board.At(x, y).IsFulfilledClue(board.GetNeighbors(x, y)))
                 {
@@ -79,6 +80,65 @@ namespace Tapa
                 }
             }
 
+            return true;
+        }
+
+        //See if all path tiles are connected (ignoring diagonals)
+        public bool ValidateConnection(bool countEmpty)
+        {
+            //Defaults to false, so no need to initialize each element
+            bool[,] cellVisited = new bool[board.Width,board.Height];
+
+            Stack<Point> cellsToVisit = new Stack<Point>();
+            //Find the first path cell to start the process
+            for(int x = 0; x < board.Width && cellsToVisit.Count == 0; x++)
+            {
+                for(int y = 0; y < board.Height && cellsToVisit.Count == 0; y++)
+                {
+                    if(board.At(x, y).IsPath())
+                    {
+                        foreach(Point neighbor in board.GetNeighborLocations(x, y, true, false))
+                        {
+                            if(!cellVisited[neighbor.X,neighbor.Y])
+                            {
+                                cellsToVisit.Push(neighbor);
+                            }
+                        }
+                        cellVisited[x, y] = true;
+                    }
+                    else if(!countEmpty)
+                    {
+                        cellVisited[x, y] = true;
+                    }
+                }
+            }
+            //Perform DFS to identify all path cells that are connected (or potentially connected)
+            while(cellsToVisit.Count > 0)
+            {
+                Point cell = cellsToVisit.Pop();
+                if(board.At(cell).IsPath() || (countEmpty && board.At(cell).IsPathable()))
+                {
+                    foreach (Point neighbor in board.GetNeighborLocations(cell.X, cell.Y, true, false))
+                    {
+                        if (!cellVisited[neighbor.X, neighbor.Y])
+                        {
+                            cellsToVisit.Push(neighbor);
+                        }
+                    }
+                }
+                cellVisited[cell.X, cell.Y] = true;
+            }
+            //Search through the board again to identify cells that are paths and are not connected to the group identified earlier
+            for (int x = 0; x < board.Width && cellsToVisit.Count == 0; x++)
+            {
+                for (int y = 0; y < board.Height && cellsToVisit.Count == 0; y++)
+                {
+                    if (!cellVisited[x, y] && board.At(x, y).IsPath())
+                    {
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     }
