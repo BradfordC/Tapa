@@ -13,11 +13,15 @@ namespace Tapa
     public partial class MainForm : Form
     {
         private Board tapaBoard;
+        private BoardValidator validator;
 
 
         public MainForm(Board board)
         {
             tapaBoard = board;
+            validator = new BoardValidator(board);
+            validator.FindClues();
+
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -101,6 +105,9 @@ namespace Tapa
                     cell.State = CellState.Black;
                 }
             }
+
+            this.CluePanel.BackColor = validator.ValidateClues() ? Color.Green : Color.Red;
+
             this.Refresh();
         }
     }

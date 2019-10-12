@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.DrawingPanel = new System.Windows.Forms.Panel();
+            this.ClueLabel = new System.Windows.Forms.Label();
+            this.CluePanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // DrawingPanel
@@ -42,21 +44,44 @@
             this.DrawingPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DrawingPanel_MouseClick);
             this.DrawingPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DrawingPanel_MouseClick);
             // 
+            // ClueLabel
+            // 
+            this.ClueLabel.AutoSize = true;
+            this.ClueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ClueLabel.Location = new System.Drawing.Point(41, 18);
+            this.ClueLabel.Name = "ClueLabel";
+            this.ClueLabel.Size = new System.Drawing.Size(49, 20);
+            this.ClueLabel.TabIndex = 1;
+            this.ClueLabel.Text = "Clues";
+            // 
+            // CluePanel
+            // 
+            this.CluePanel.BackColor = System.Drawing.Color.Red;
+            this.CluePanel.Location = new System.Drawing.Point(96, 18);
+            this.CluePanel.Name = "CluePanel";
+            this.CluePanel.Size = new System.Drawing.Size(20, 20);
+            this.CluePanel.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(568, 611);
+            this.Controls.Add(this.CluePanel);
+            this.Controls.Add(this.ClueLabel);
             this.Controls.Add(this.DrawingPanel);
             this.Name = "MainForm";
             this.Text = "Tapa";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Panel DrawingPanel;
+        private System.Windows.Forms.Label ClueLabel;
+        private System.Windows.Forms.Panel CluePanel;
     }
 }
 
