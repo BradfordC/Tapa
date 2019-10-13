@@ -115,19 +115,9 @@ namespace Tapa
                 }
             }
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
             this.CluePanel.BackColor = validator.ValidateClues() ? Color.Green : Color.Red;
             this.SquarePanel.BackColor = validator.ValidateSquares() ? Color.Green : Color.Red;
-            if(validator.ValidateConnection(false))
-            {
-                this.ConnectionPanel.BackColor = Color.Green;
-            }
-            else
-            {
-                this.ConnectionPanel.BackColor = Color.Red;
-            }
-            stopwatch.Stop();
-            Console.WriteLine("Validation: " + stopwatch.Elapsed);
+            this.ConnectionPanel.BackColor = validator.ValidateConnection(false) ? Color.Green : Color.Red;
 
             this.Refresh();
         }
