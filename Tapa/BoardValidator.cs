@@ -35,6 +35,16 @@ namespace Tapa
             }
         }
 
+        public bool BoardSolved()
+        {
+            return ValidateClues() && ValidateSquares() && ValidateConnection(false);
+        }
+
+        public bool BoardSolvable()
+        {
+            return !ImpossibleClues() && ValidateSquares() && ValidateConnection(true);
+        }
+
         public bool ValidateClues()
         {
             if(ClueLocs == null)
@@ -52,6 +62,25 @@ namespace Tapa
                 }
             }
             return true;
+        }
+
+        public bool ImpossibleClues()
+        {
+            if (ClueLocs == null)
+            {
+                FindClues();
+            }
+            foreach (Point clueLoc in ClueLocs)
+            {
+                int x = clueLoc.X;
+                int y = clueLoc.Y;
+
+                if (board.At(x, y).RemainingClueConfigs(board.GetNeighbors(x, y)) == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         //Make sure the path doesn't form a 2x2 square anywhere on the board

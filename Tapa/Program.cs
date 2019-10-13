@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Tapa
 {
@@ -31,6 +32,12 @@ namespace Tapa
             tapa.At(3, 8).SetClues(4);
             tapa.At(9, 8).SetClues(3);
             tapa.At(6, 9).SetClues(3);
+            
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            Solver solver = new Solver();
+            tapa = solver.SolveBoard(tapa);
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.Elapsed);
 
             MainForm form = new MainForm(tapa);
             Application.Run(form);
