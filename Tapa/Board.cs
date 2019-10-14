@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Tapa
@@ -41,6 +42,23 @@ namespace Tapa
             return At(location.X, location.Y);
         }
 
+        public bool AreNeighbors(Point a, Point b, bool countDiagonals = true)
+        {
+            int xDif = Math.Abs(a.X - b.X);
+            int yDif = Math.Abs(a.Y - b.Y);
+
+            if(xDif > 1 || yDif > 1)
+            {
+                return false;
+            }
+            if(!countDiagonals && xDif != 0 && yDif != 0)
+            {
+                return false;
+            }
+            return true;
+            
+        }
+
         public List<Cell> GetNeighbors(int x, int y, bool countDiagonals = true)
         {
             List<Cell> neighbors = new List<Cell>();
@@ -51,15 +69,17 @@ namespace Tapa
             return neighbors;
         }
 
+
+        //Stick these arrays here to prevent performance issues from initializing them a million times
+        //Neighbors should be added in the following order
+        //  123
+        //  8x4
+        //  765
+        private int[] dx = { -1, 0, 1, 1, 1, 0, -1, -1 };
+        private int[] dy = { -1, -1, -1, 0, 1, 1, 1, 0 };
         public List<Point> GetNeighborLocations(int x, int y, bool stayInbounds = false, bool countDiagonals = true)
         {
             List<Point> neighborLocs = new List<Point>();
-            //Neighbors should be added in the following order
-            //  123
-            //  8x4
-            //  765
-            int[] dx = { -1, 0, 1, 1, 1, 0, -1, -1 };
-            int[] dy = { -1, -1, -1, 0, 1, 1, 1, 0 };
 
             for (int i = 0; i < dx.Length; i++)
             {

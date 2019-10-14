@@ -49,9 +49,11 @@ namespace Tapa
             return ValidateClues() && ValidateSquares() && ValidateConnection(false);
         }
 
-        public bool BoardSolvable()
+        //Sees if the board is still solvable.
+        //If a cell is given, it is assumed that the board was solvable before that cell was changed.
+        public bool BoardSolvable(Point? changedCell = null)
         {
-            return !ImpossibleClues() && ValidateSquares() && ValidateConnection(true);
+            return !ImpossibleClues(changedCell) && ValidateSquares(changedCell) && ValidateConnection(true, changedCell);
         }
 
         public bool ValidateClues()
@@ -73,7 +75,9 @@ namespace Tapa
             return true;
         }
 
-        public bool ImpossibleClues()
+        //Searches through the clues to see if any of them are impossible to fulfill.
+        //If a cell is given, only the clues neighboring it are checked- the rest are assumed to be fulfilled.
+        public bool ImpossibleClues(Point? changedCell = null)
         {
             if (ClueLocs == null)
             {
@@ -83,6 +87,11 @@ namespace Tapa
             {
                 int x = clueLoc.X;
                 int y = clueLoc.Y;
+                //Only check the clue if it's beside the cell that changed
+                if(changedCell != null && !board.AreNeighbors(changedCell.Value, clueLoc))
+                {
+                    continue;
+                }
 
                 if (board.At(x, y).RemainingClueConfigs(board.GetNeighbors(x, y)) == 0)
                 {
@@ -93,8 +102,14 @@ namespace Tapa
         }
 
         //Make sure the path doesn't form a 2x2 square anywhere on the board
-        public bool ValidateSquares()
+        public bool ValidateSquares(Point? changedCell = null)
         {
+            //If the changed cell is not a path now, there's no way it's part in a square
+            if(changedCell != null && !board.At(changedCell.Value).IsPath())
+            {
+                return true;
+            }
+
             //For each cell, check the 2x2 square with it in the top left.
             //We don't need to check the far bottom or far right cells
             int[] dx = {0, 0, 1, 1 };
@@ -122,34 +137,74 @@ namespace Tapa
         }
 
         //See if all path tiles are connected (ignoring diagonals)
-        public bool ValidateConnection(bool countEmpty)
+        //If a cell is given, only paths that could be affected by the cell changing are checked.
+        //I.e. it is assumed that, before that cell was changed, all paths were connected
+        public bool ValidateConnection(bool countEmpty, Point? changedCell = null)
         {
             //Defaults to false, so no need to initialize each element
             bool[,] cellVisited = new bool[board.Width,board.Height];
 
             Stack<Point> cellsToVisit = new Stack<Point>();
             //Find the first path cell to start the process
-            for(int x = 0; x < board.Width && cellsToVisit.Count == 0; x++)
+            if(changedCell != null)
             {
-                for(int y = 0; y < board.Height && cellsToVisit.Count == 0; y++)
+                Point changed = changedCell.Value;
+
+                //If empty cells can be considered for connectivity, there's no way for an empty cell to break connectivity
+                if (countEmpty && board.At(changed).State == CellState.Empty)
                 {
-                    if(board.At(x, y).IsPath())
+                    return true;
+                }
+
+                //If we're focusing on a changed cell, start with the cells beside it.
+                foreach (Point neighbor in board.GetNeighborLocations(changed.X, changed.Y, true, false))
+                {
+                    //All other paths at this point are assumed to be connected, so if this cell is a path and it sees a path, it'll be connected as well.
+                    if (board.At(changed).IsPath() && board.At(neighbor).IsPath())
                     {
-                        foreach(Point neighbor in board.GetNeighborLocations(x, y, true, false))
-                        {
-                            if(!cellVisited[neighbor.X,neighbor.Y])
-                            {
-                                cellsToVisit.Push(neighbor);
-                            }
-                        }
-                        cellVisited[x, y] = true;
+                        return true;
                     }
-                    else if(!countEmpty)
+                    //If this cell breaks connections, see if there's a path potentially going through it
+                    //An empty cell at this point breaks connections, since if it were empty and counted as a path, it would've been handled already
+                    bool connectionBreakingState = board.At(changed).State == CellState.Wall || board.At(changed).State == CellState.Empty;
+                    if (connectionBreakingState && board.At(neighbor).IsPath())
                     {
-                        cellVisited[x, y] = true;
+                        cellsToVisit.Push(neighbor);
+                        break;
+                    }
+                }
+                if (board.At(changed).IsPath())
+                {
+                    cellsToVisit.Push(changed);
+                }
+            }
+            //If we don't have a specific cell to start at, find any black cell
+            if (changedCell == null || cellsToVisit.Count == 0)
+            {
+                for (int x = 0; x < board.Width && cellsToVisit.Count == 0; x++)
+                {
+                    for (int y = 0; y < board.Height && cellsToVisit.Count == 0; y++)
+                    {
+                        if (board.At(x, y).IsPath())
+                        {
+                            foreach (Point neighbor in board.GetNeighborLocations(x, y, true, false))
+                            {
+                                if (!cellVisited[neighbor.X, neighbor.Y])
+                                {
+                                    cellsToVisit.Push(neighbor);
+                                }
+                            }
+                            cellVisited[x, y] = true;
+                        }
+                        else if (!countEmpty)
+                        {
+                            cellVisited[x, y] = true;
+                        }
                     }
                 }
             }
+
+
             //Perform DFS to identify all path cells that are connected (or potentially connected)
             while(cellsToVisit.Count > 0)
             {
@@ -166,6 +221,7 @@ namespace Tapa
                 }
                 cellVisited[cell.X, cell.Y] = true;
             }
+
             //Search through the board again to identify cells that are paths and are not connected to the group identified earlier
             for (int x = 0; x < board.Width && cellsToVisit.Count == 0; x++)
             {

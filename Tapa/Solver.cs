@@ -39,7 +39,7 @@ namespace Tapa
                     {
                         foundSolution = true;
                     }
-                    else if(validator.BoardSolvable())
+                    else if(validator.BoardSolvable(cells[i]))
                     {
                         i++;
                         //Rewind here, in case the last few cells are clues
