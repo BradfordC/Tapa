@@ -15,7 +15,7 @@ namespace Tapa
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MeasurePerformance(5);
+            MeasurePerformance(10, 1);
 
             Board tapa = GetPuzzle(1);
 
@@ -61,6 +61,22 @@ namespace Tapa
             }
             else if(choice == 2)
             {
+                puzzle = new Board(13);
+                int[] x = {3, 1, 7, 4, 9, 2, 11, 0, 5, 10, 12, 5, 8, 3, 5, 9};
+                int[] y = {0, 1, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 10, 11, 11, 12};
+                for(int i = 0; i < x.Length; i++)
+                {
+                    puzzle.At(x[i], y[i]).SetClues(4);
+                }
+                x = new int[] {9, 11, 7, 2, 7, 1, 10, 3, 1, 11};
+                y = new int[] {1, 1, 4, 6, 7, 8, 8, 9, 11, 11};
+                for (int i = 0; i < x.Length; i++)
+                {
+                    puzzle.At(x[i], y[i]).SetClues(7);
+                }
+            }
+            else if (choice == 3)
+            {
                 puzzle = new Board(16);
                 int[] x = { 8, 15, 0, 10, 12, 9, 5, 15, 14, 0, 4, 7};
                 int[] y = { 0, 0, 2, 4, 4, 8, 9, 13, 14, 15, 15, 15};
@@ -78,13 +94,13 @@ namespace Tapa
             return puzzle;
         }
 
-        static void MeasurePerformance(int reps)
+        static void MeasurePerformance(int reps, int puzzle)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             Solver solver = new Solver();
             for (int i = 0; i < reps; i++)
             {
-                Board tapa = GetPuzzle(1);
+                Board tapa = GetPuzzle(puzzle);
                 tapa = solver.SolveBoard(tapa);
             }
             stopwatch.Stop();
