@@ -108,8 +108,13 @@ namespace Tapa
             }
 
             //Compare current line segments to clue
-            List<int> goal = Clues.OrderByDescending(i => i).ToList();
-            List<int> actual = segments.OrderByDescending(i => i).ToList();
+            List<int> goal = new List<int>(Clues);
+            List<int> actual = new List<int>(segments);
+            goal.Sort();
+            goal.Reverse();
+            actual.Sort();
+            actual.Reverse();
+
             if (goal.Count != actual.Count)
             {
                 return false;
