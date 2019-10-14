@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,15 @@ namespace Tapa
             BoardValidator validator = new BoardValidator(puzzle);
             int i = 0;
             bool foundSolution = false;
+            List<Point> cells = GenerateCellPriority(validator);
+
             while (!foundSolution && i >= 0)
             {
-                Cell cell = puzzle.Cells[i];
+                Cell cell = puzzle.At(cells[i]);
                 if (cell.State == CellState.Wall)
                 {
                     cell.State = CellState.Empty;
-                    do
-                    {
-                        i--;
-                    } while (i >= 0 && puzzle.Cells[i].IsClue());
+                    i--;
                 }
                 else
                 {
@@ -41,17 +41,11 @@ namespace Tapa
                     }
                     else if(validator.BoardSolvable())
                     {
-                        do
-                        {
-                            i++;
-                        } while (i < puzzle.Cells.Count && puzzle.Cells[i].IsClue());
+                        i++;
                         //Rewind here, in case the last few cells are clues
-                        if(i == puzzle.Cells.Count)
+                        if(i == cells.Count)
                         {
-                            do
-                            {
-                                i--;
-                            } while (i >= 0 && puzzle.Cells[i].IsClue());
+                            i--;
                         }
                     }
                 }
@@ -62,6 +56,37 @@ namespace Tapa
             }
 
             return puzzle;
+        }
+
+        private List<Point> GenerateCellPriority(BoardValidator validator)
+        {
+            List<Point> cells = new List<Point>();
+
+            Board puzzle = validator.board;
+            bool[,] cellAdded = new bool[puzzle.Width, puzzle.Height];
+            foreach (Point clue in validator.GetClues())
+            {
+                foreach (Point clueNeighbor in puzzle.GetNeighborLocations(clue.X, clue.Y, true, true))
+                {
+                    if(!cellAdded[clueNeighbor.X, clueNeighbor.Y] && !puzzle.At(clueNeighbor).IsClue())
+                    {
+                        cellAdded[clueNeighbor.X, clueNeighbor.Y] = true;
+                        cells.Add(clueNeighbor);
+                    }
+                }
+            }
+
+            for (int x = 0; x < puzzle.Width; x++)
+            {
+                for(int y = 0; y < puzzle.Height; y++)
+                {
+                    if(!cellAdded[x, y] && !puzzle.At(x, y).IsClue())
+                    {
+                        cells.Add(new Point(x, y));
+                    }
+                }
+            }
+            return cells;
         }
     }
 }

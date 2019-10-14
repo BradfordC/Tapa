@@ -9,9 +9,9 @@ namespace Tapa
 {
     class BoardValidator
     {
-        private List<Point> ClueLocs;
+        public Board board;
 
-        private Board board;
+        private List<Point> ClueLocs;
 
         public BoardValidator(Board board)
         {
@@ -33,6 +33,15 @@ namespace Tapa
 
                 }
             }
+        }
+
+        public List<Point> GetClues()
+        {
+            if(ClueLocs == null)
+            {
+                FindClues();
+            }
+            return new List<Point>(ClueLocs);
         }
 
         public bool BoardSolved()
