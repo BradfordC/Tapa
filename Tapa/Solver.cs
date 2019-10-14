@@ -48,10 +48,10 @@ namespace Tapa
                         //Rewind here, in case the last few cells are clues
                         if(i == puzzle.Cells.Count)
                         {
-                            while (i >= 0 && puzzle.Cells[i].IsClue())
+                            do
                             {
                                 i--;
-                            }
+                            } while (i >= 0 && puzzle.Cells[i].IsClue());
                         }
                     }
                 }
