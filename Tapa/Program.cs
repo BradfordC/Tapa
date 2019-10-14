@@ -15,8 +15,10 @@ namespace Tapa
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            MeasurePerformance(5);
+
             Board tapa = GetPuzzle(1);
-            
+
             Stopwatch stopwatch = Stopwatch.StartNew();
             Solver solver = new Solver();
             tapa = solver.SolveBoard(tapa);
@@ -74,6 +76,20 @@ namespace Tapa
                 }
             }
             return puzzle;
+        }
+
+        static void MeasurePerformance(int reps)
+        {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            Solver solver = new Solver();
+            for (int i = 0; i < reps; i++)
+            {
+                Board tapa = GetPuzzle(1);
+                tapa = solver.SolveBoard(tapa);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Total: " + stopwatch.Elapsed);
+            Console.WriteLine("Average: " + TimeSpan.FromTicks(stopwatch.Elapsed.Ticks / reps));
         }
     }
 }
