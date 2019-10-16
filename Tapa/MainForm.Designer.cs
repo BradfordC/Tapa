@@ -39,6 +39,9 @@
             // 
             // DrawingPanel
             // 
+            this.DrawingPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DrawingPanel.BackColor = System.Drawing.Color.Silver;
             this.DrawingPanel.Location = new System.Drawing.Point(12, 59);
             this.DrawingPanel.Name = "DrawingPanel";

@@ -37,7 +37,7 @@ namespace Tapa
             //Draw the boxes for the game
             int boardSize = Math.Min(panel.Width, panel.Height);
             int tileSize = boardSize / Math.Min(tapaBoard.Width, tapaBoard.Height);
-            int cellBezel = 5;
+            int cellBezel = 2;
             Size cellSize = new Size(tileSize - cellBezel * 2, tileSize - cellBezel * 2);
             for(int x = 0; x < tapaBoard.Width; x++)
             {
@@ -78,13 +78,15 @@ namespace Tapa
                     e.Graphics.FillRectangle(new SolidBrush(color), new Rectangle(cellCorner, cellSize));
                     if(cellText != null)
                     {
-                        Font font = new Font("Arial", 20);
+                        //Scale the font based on how big the tiles are
+                        int fontSize = (int)(10 + (tileSize - 33) * 0.27);
+                        Font font = new Font("Arial", fontSize);
                         SolidBrush brush = new SolidBrush(Color.Black);
                         StringFormat format = new StringFormat();
                         format.Alignment = StringAlignment.Center;
                         format.LineAlignment = StringAlignment.Center;
 
-                        e.Graphics.DrawString(cellText, font, brush, Point.Add(cellCorner, new Size(cellSize.Width / 2, cellSize.Height / 2)), format);
+                        e.Graphics.DrawString(cellText, font, brush, Point.Add(cellCorner, new Size(cellSize.Width / 2, cellSize.Height / 2 + 2)), format);
                     }
                 }
             }

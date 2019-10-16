@@ -180,11 +180,18 @@ namespace Tapa
             }
 
             string clueString = "";
-            foreach(int clue in Clues)
+            for(int i = 0; i < Clues.Count; i++)
             {
-                clueString += clue + " ";
+                if (i == 2)
+                {
+                    clueString += "\n";
+                }
+                clueString += Clues[i];
+                if(i != Clues.Count - 1)
+                {
+                    clueString += " ";
+                }
             }
-            clueString.Remove(clueString.Length - 1);
             return clueString;
         }
     }
